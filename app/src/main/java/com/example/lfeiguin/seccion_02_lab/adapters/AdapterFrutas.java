@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lfeiguin.seccion_02_lab.R;
@@ -42,19 +43,35 @@ public class AdapterFrutas extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = convertView;
+        ViewHolder holder;
+        if(convertView == null){
+            LayoutInflater layoutInflater = LayoutInflater.from(this.context);
+            convertView = layoutInflater.inflate(R.layout.list_item_fruta, null);
 
-        LayoutInflater layoutInflater = LayoutInflater.from(this.context);
-        v = layoutInflater.inflate(R.layout.list_item_fruta, null);
+            holder = new ViewHolder();
+            holder.txtNombre = (TextView) convertView.findViewById(R.id.txtNombre);
+            holder.txtCiudad = (TextView) convertView.findViewById(R.id.txtCiudad);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
+            convertView.setTag(holder);
+        }else{
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         String  frutaActual = frutaList.get(position).getNombre();
-        TextView txtNombre = (TextView) v.findViewById(R.id.txtNombre);
-        txtNombre.setText(frutaActual);
+        holder.txtNombre.setText(frutaActual);
 
         String ciudadActual = frutaList.get(position).getCiudad();
-        TextView txtCiudad = (TextView) v.findViewById(R.id.txtCiudad);
-        txtCiudad.setText(ciudadActual);
+        holder.txtCiudad.setText(ciudadActual);
 
-        return v;
+        int imagenActual = frutaList.get(position).getIcono();
+        holder.imageView.setImageResource(imagenActual);
+
+        return convertView;
+    }
+
+    static class ViewHolder{
+        private TextView txtNombre;
+        private TextView txtCiudad;
+        private ImageView imageView;
     }
 }

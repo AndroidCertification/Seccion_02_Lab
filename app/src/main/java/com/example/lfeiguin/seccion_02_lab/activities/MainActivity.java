@@ -2,6 +2,9 @@ package com.example.lfeiguin.seccion_02_lab.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.lfeiguin.seccion_02_lab.R;
@@ -15,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView listViewFrutas;
     private List<Fruta> frutasList;
+    private int counter = 0;
+    private AdapterFrutas adapterFrutas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +40,27 @@ public class MainActivity extends AppCompatActivity {
             add(new Fruta("Raspberry", R.mipmap.ic_raspberry, "Barcelona"));
         }};
 
-        AdapterFrutas adapterFrutas = new AdapterFrutas(this, R.layout.list_item_fruta, frutasList);
+        adapterFrutas = new AdapterFrutas(this, R.layout.list_item_fruta, frutasList);
         listViewFrutas.setAdapter(adapterFrutas);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.add_item:
+                this.frutasList.add((new Fruta("New " + (++counter), R.mipmap.ic_new_fruit, "New city")));
+                this.adapterFrutas.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 
